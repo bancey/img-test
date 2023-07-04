@@ -14,6 +14,8 @@ jobs:
           mkdir images
           mkdir source
           find . -name "*.yaml" -type f \( -name "*.yaml" -o -name "*.md" -o -name "*.tf" -o -name "*.bicep" -o -name "*.json" \)  -exec mv -t source/ -- {} +
+          ls
+          ls source
       - name: Generate Images
         uses: sharadcodes/code-snap-action@v1.0
         with:
