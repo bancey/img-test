@@ -9,14 +9,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Generate pngs
+      - name: Create output folder
+        run: mkdir images
+      - name: Generate Images
         uses: sharadcodes/code-snap-action@v1.0
         with:
           source_folder: "source"
-          output_folder: "snaps"
+          output_folder: "images"
           syntax_theme: "emacs"
+      - name: Get generated images
+        run: |
+          echo "IMAGES=$(find images -name "*" -type f)" >> $GITHUB_OUTPUT
+        id: get_images
       - name: Create Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: snaps
+          files: ${{ steps.get_images.outputs.IMAGES }}
