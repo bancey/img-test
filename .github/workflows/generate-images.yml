@@ -22,10 +22,13 @@ jobs:
           syntax_theme: "emacs"
       - name: Get generated images
         run: |
-          echo "IMAGES=$(find images -name "*" -type f)" >> $GITHUB_OUTPUT
+          echo "IMAGES<<EOF" >> $GITHUB_ENV
+          echo "|" >> $GITHUB_ENV
+          echo "$(find images -name "*" -type f)" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
         id: get_images
       - name: Create Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: ${{ steps.get_images.outputs.IMAGES }}
+          files: ${{ env.IMAGES }}
